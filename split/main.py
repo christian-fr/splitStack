@@ -1,5 +1,4 @@
 from typing import List, Union, Tuple, Dict, Optional
-from collections import defaultdict
 import datetime
 import pprint
 
@@ -8,9 +7,12 @@ from context.json_data import SPLIT_TYPE_VAR
 
 
 def get_episode(json_array: List[dict], index: Union[int, str]) -> dict:
-    if int(index) < 0:
+    if int(index) < 0 or int(index) > len(json_array)-1:
         return {}
-    return json_array[int(index)]
+    try:
+        return json_array[int(index)]
+    except:
+        breakpoint()
 
 
 def get_json_property(episode: dict, prprty: str) -> Union[dict, list, str, None]:
@@ -50,8 +52,9 @@ def timestamp_within_episode(ts_str: str, episode: dict) -> bool:
 
 
 def create_split_stack(json_array: List[dict],
-                       episode_index: int,
-                       split_type_var_dict: dict) -> Tuple[List[dict], Dict[str, list]]:
+                       episode_index: Union[int, str],
+                       split_type_var_dict: dict,
+                       previous_split_stack: dict) -> Tuple[List[dict], Dict[str, list]]:
     # create stack
     episode = get_episode(json_array, episode_index)
 
@@ -89,6 +92,12 @@ def create_split_stack(json_array: List[dict],
             # DEV
             # breakpoint()
 
+    for key, val in previous_split_stack.items():
+        if key in split_dict.keys():
+            split_dict[key]
+        else:
+            split_dict[key] = val
+
     return json_array, split_dict
 
 
@@ -115,13 +124,13 @@ def split_episode(json_array: List[dict],
     # child episode
     child_id = str(max_episode_id + 1)
     child_episode = parent_episode.copy()
-    child_episode['startDate'] = as_zofar_datetime_str(ts)
-    child_episode['id'] = child_id
-    child_episode['parent'] = str(parent_episode['id'])
-    child_episode['state'] = 'new'
+    child_episode = add_or_replace_prprty(child_episode, 'startDate', as_zofar_datetime_str(ts))
+    child_episode = add_or_replace_prprty(child_episode, 'id', child_id)
+    child_episode = add_or_replace_prprty(child_episode, 'parent', str(parent_episode['id']))
+    child_episode = add_or_replace_prprty(child_episode, 'state', 'new')
 
-    if child_episode['startDate'] in [ts for ts in split_stack.keys()]:
-        child_episode['splitType'] = split_stack[child_episode['startDate']]
+    if get_json_property(child_episode, 'startDate') in [ts for ts in split_stack.keys()]:
+        add_or_replace_prprty(child_episode, 'splitType', split_stack[child_episode['startDate']])
         split_stack.pop(child_episode['startDate'])
     child_episode['splitStack'] = split_stack
     if child_episode['splitStack'] == {}:
@@ -161,8 +170,9 @@ def add_timedelta(ts: datetime, months: int = 0, days: int = 0) -> datetime:
     return ts.replace(year=new_year, month=new_month) + datetime.timedelta(days=days)
 
 
-def next_split(json_array: List[dict], episode_index: Union[int, str], split_stack_dict: dict) -> Tuple[
-    List[dict], str, dict]:
+def next_split(json_array: List[dict],
+               episode_index: Union[int, str],
+               split_stack_dict: dict) -> Tuple[List[dict], str, dict]:
     episode_index = int(episode_index)
     if episode_index == -1:
         breakpoint()
@@ -172,6 +182,7 @@ def next_split(json_array: List[dict], episode_index: Union[int, str], split_sta
 
     def _prepare_timestamp(_split_stack_dict: dict) -> Tuple[Optional[str], Optional[List[str]]]:
         timestamp_list = list(split_stack_dict.keys())
+        # noinspection PySimplifyBooleanCheck
         if timestamp_list != []:
             timestamp_list.sort()
             # get the first entry of the split_stack
@@ -182,16 +193,20 @@ def next_split(json_array: List[dict], episode_index: Union[int, str], split_sta
 
     timestamp, sorted_timestamp_list = _prepare_timestamp(split_stack_dict)
 
-    while not timestamp_within_episode(timestamp, get_episode(json_array, episode_index)):
-        split_stack_dict.pop(timestamp)
-        timestamp, sorted_timestamp_list = _prepare_timestamp(split_stack_dict)
-        if timestamp is None:
-            if 'splitStack' in get_episode(json_array, episode_index):
-                if get_episode(json_array, episode_index)['splitStack'] == {}:
-                    # json_array[episode_index] = json_array[episode_index].pop('splitStack')
-                    json_array[episode_index].pop('splitStack')
+    if get_episode(json_array, episode_index) != {}:
+        while not timestamp_within_episode(timestamp, get_episode(json_array, episode_index)):
+            split_stack_dict.pop(timestamp)
+            timestamp, sorted_timestamp_list = _prepare_timestamp(split_stack_dict)
+            if timestamp is None:
+                if 'splitStack' in get_episode(json_array, episode_index):
+                    if get_episode(json_array, episode_index)['splitStack'] == {}:
+                        # json_array[episode_index] = json_array[episode_index].pop('splitStack')
+                        json_array[episode_index].pop('splitStack')
 
-            return json_array, str(-1), {}
+                return json_array, str(-1), {}
+
+    else:
+        return json_array, str(-1), {}
 
     # split the episode at the current timestamp
     json_array, next_episode_index, split_stack_dict = split_episode(json_array, episode_index, timestamp,
