@@ -222,15 +222,34 @@ def main():
     episode_index = 0
 
     # Definition:
-    # - Split Criterion / "Splitkriterium": ein oder mehrere Merkmale, die inhaltlich zusammenhängen und bei denen eine
+    # - Modul:
+    #   - eine Sammlung von Pages, die aufeinander verweisen und innerhalb der Gesamtbefragung einen Subgraphen
+    #     bilden;
+    #   - ein Modul beinhaltet detaillierte Nachfragen zu einem bestimmten Episoden-Typ;
+    #   - in einem Modul gibt es:
+    #     - mind. eine Page, über die das Modul betreten wird;
+    #     - mind. eine Page, über die das Modul verlassen wird;
+    #     - ggf. Verzweigungen innerhalb des Moduls;
+    #     - ggf. Pages, auf denen ->Splitkriterien abgefragt werden;
+    #     - ggf. Pages, auf denen ->Splitvariablen abgefragt werden;
+    #     - ggf. Pages, auf denen ->Zeitstempel für diese ->Splitvariablen (per Monthpicker) abgefragt werden;
+    #     - auf den End-Pages eines Moduls werden ggf. ->Split-Stacks erstellt und
+    #       Splits durchgeführt (siehe hierzu: ->Elter-Episode);
+    #   - die Modul-Zugehörigkeit einer Page lässt sich durch die ersten n Buchstaben ihres Namens eindeutig erkennen;
+    # - Teilmodul:
+    #   - innerhalb eines Modul kann es Teilmodule geben;
+    #   - diese Teilmodule werden unter bestimmten Bedingungen betreten und wieder verlassen;
+    #   - die Teilmodul-Zugehörigkeit einer Page lässt sich durch die ersten n+1 Buchstaben ihres Namens
+    #     eindeutig erkennen;
+    # - Splitkriterium: ein oder mehrere Merkmale, die inhaltlich zusammenhängen und bei denen eine
     #    eventuelle Änderung mithilfer einer ->Splitvariablen abgefragt wird;
     # - Zeitstempel-Variable: Variable, die über einen Monthpicker erfasst wurde und einen Zeitstempel der Form
     #    "YYYY-MM-DDT01:00:00.000Z" aufweist, wobei
     #     "DD" -> {"01","28","29","30","31"}
     #     sein kann (erster bzw. letzter Tag des Monats);
-    # - Split Variable / Splitvariable: eine oder mehre Variablen, deren Beantwortung mit einem bestimmten Wert
-    #    die Änderung eines ->Split-Kriteriums markiert und die einen Split auslöst; je nach Kombination aus Variablenname
-    #    und Variablenwert wird dem zugehörigen Zeitstempel ein bestimmter ->Split-Typ zugeordnet;
+    # - Splitvariable: eine oder mehre Variablen, deren Beantwortung mit einem bestimmten Wert
+    #    die Änderung eines ->Split-Kriteriums markiert und die einen Split auslöst; je nach Kombination aus
+    #    Variablenname und Variablenwert wird dem zugehörigen Zeitstempel ein bestimmter ->Split-Typ zugeordnet;
     # - Split-Typ: ein String, der eindeutig eine von ggf. mehreren möglichen Kombinationen von Variablennamen und
     #    Variablenwerten markiert, ihm wird beim Split eine ->Zeitstempel-Variable zugeordnet;
     #    die Split-Typen werden als Map/Dictionary im QML festgelegt zugeführt:
@@ -275,7 +294,7 @@ def main():
     #    vorliegt, wird die aktuelle Episode zu einer Elter-Episode;
     #    - der Status "state" der Elter-Episode wird auf "done" gesetzt;
     #    - der "splitStack" der Elter-Episode wird nach Keys sortiert, der niedrigste Key (->Zeitstempel) wird
-    #      ausgewählt
+    #      ausgewählt;
     #    - dieser niedrigste Key (frühester ->Zeitstempel) wird für die Datumsanpassung genutzt:
     #        parent_episode["endDate"] = earliest_timestamp - 1day
     #        child_episode["startDate"] = earliest_timestamp
@@ -323,6 +342,7 @@ def main():
     #      bestimmt werden und der Wert um 1 verringert werden:
     #        child_episode_index = len(JSON_ARRAY) -1
     #    - falls kein Property "child" gefunden werden kann, wird die Episode normal beendet;
+    #    - innerhalb des Moduls, für das ->Split-Typen definiert wurden,
 
 
     # Episode filled completely, end-page of module reached
