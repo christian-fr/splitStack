@@ -349,8 +349,6 @@ def main():
     print('### Episode filled completely, end-page of module reached.')
     pprint.pprint(JSON_ARRAY_01)
 
-    # we clicked on "Next"
-    # before first split
 
     json_array, split_stack = create_split_stack(json_array=main_json_array,
                                                  episode_index=episode_index,
