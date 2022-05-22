@@ -5,14 +5,8 @@ import copy
 
 
 class Test(TestCase):
-    def setUp(self) -> None:
-        pass
-
-    def tearDown(self) -> None:
-        pass
-
     def test_one_split_JSON_ARRAY_01(self):
-        # 1.) do one split
+        # do one split
         json_array = copy.deepcopy(JSON_ARRAY_01)
         json_array, episode_index = split(json_array=json_array,
                                           split_types=SPLIT_TYPE_DICT,
@@ -24,7 +18,7 @@ class Test(TestCase):
         del episode_index
 
     def test_up_to_two_splits_JSON_ARRAY_01(self):
-        # 2.) do up to two splits
+        # do up to two splits
         json_array = copy.deepcopy(JSON_ARRAY_01)
         json_array, episode_index = split(json_array=json_array,
                                           split_types=SPLIT_TYPE_DICT,
@@ -36,7 +30,7 @@ class Test(TestCase):
         del episode_index
 
     def test_max_split_JSON_ARRAY_01(self):
-        # 3.) do as many splits as possible
+        # do as many splits as possible
         json_array = copy.deepcopy(JSON_ARRAY_01)
         json_array, episode_index = split(json_array=json_array,
                                           split_types=SPLIT_TYPE_DICT,
@@ -46,7 +40,7 @@ class Test(TestCase):
         self.assertEqual(JSON_ARRAY_01_max_split, json_array)
 
     def test_one_split_add_split_JSON_ARRAY_01(self):
-        # 4.) do one split, add split variables and timestamps to current episode and then do the second split
+        # do one split, add split variables and timestamps to current episode and then do the second split
         json_array = copy.deepcopy(JSON_ARRAY_01)
         json_array, episode_index = split(json_array=json_array,
                                           split_types=SPLIT_TYPE_DICT,
