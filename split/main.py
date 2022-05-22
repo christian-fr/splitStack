@@ -1,5 +1,7 @@
+import math
 from typing import List, Union, Tuple, Dict, Any
 import datetime
+import math
 
 
 def get_episode(json_array: List[dict], index: Union[int, str]) -> dict:
@@ -108,21 +110,28 @@ def as_datetime_timestamp(date_str: str) -> datetime:
 def add_timedelta(ts: datetime, months: int = 0, days: int = 0) -> datetime:
     """
 
-    :param ts:
-    :param months:
-    :param days:
-    :return:
+    :param ts: input datetime object
+    :param months: months delta (int)
+    :param days: days delta (int)
+    :return: new datetime object
     """
     new_year = ts.year
-    months_incr = months
     # additional increment by 1 because we want to decrease it by 1 day (to get the end of the month) later
-    new_month = ts.month + months_incr
+    months = ts.month + months
+    x = math.floor(months / 12)
 
-    if new_month > 12:
-        new_year += 1
-        new_month = new_month - 12
+    if months > 12:
+        new_year = new_year + math.floor(months / 12)
+        new_months = months % 12
 
-    return ts.replace(year=new_year, month=new_month) + datetime.timedelta(days=days)
+    elif months < 1:
+        new_year = new_year + math.ceil(months / 12) - 1
+        new_months = 12 - (months % 12)
+
+    else:
+        new_months = months
+
+    return ts.replace(year=new_year, month=new_months) + datetime.timedelta(days=days)
 
 
 def add_type_to_split_stack(split_stack_dict: dict, timestamp: str, split_type: str) -> Dict[str, List[str]]:

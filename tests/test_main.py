@@ -1,6 +1,7 @@
+import datetime
 from unittest import TestCase
 from context.json_data import *
-from split.main import split
+from split.main import split, add_timedelta
 import copy
 
 
@@ -82,3 +83,42 @@ class Test(TestCase):
 
         self.assertEqual(-1, episode_index)
         self.assertEqual(JSON_ARRAY_01_modified_max_split, json_array)
+
+    def test_add_timedelta_sub_01(self):
+        ts1 = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-1, days=-1)
+        self.assertEqual(datetime.datetime(2000, 3, 31), ts1)
+
+    def test_add_timedelta_sub_02(self):
+        ts2 = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-4, days=-1)
+        self.assertEqual(datetime.datetime(1999, 12, 31), ts2)
+
+    def test_add_timedelta_sub_03(self):
+        ts3 = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-5, days=-1)
+        self.assertEqual(datetime.datetime(1999, 11, 30), ts3)
+
+    def test_add_timedelta_sub_04(self):
+        ts4 = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-1, days=0)
+        self.assertEqual(datetime.datetime(2000, 4, 1), ts4)
+
+    def test_add_timedelta_sub_05(self):
+
+        ts5 = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-4, days=0)
+        self.assertEqual(datetime.datetime(2000, 1, 1), ts5)
+
+    def test_add_timedelta_sub_06(self):
+        ts6 = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-5, days=0)
+        self.assertEqual(datetime.datetime(1999, 12, 1), ts6)
+
+    def test_add_timedelta_add_01(self):
+        ts7 = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=10, days=0)
+        self.assertEqual(datetime.datetime(2001, 3, 1), ts7)
+
+    def test_add_timedelta_add_02(self):
+        ts8 = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=33, days=365)
+        self.assertEqual(datetime.datetime(2004, 2, 1), ts8)
+
+    def test_add_timedelta_add_03(self):
+        ts9 = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-26, days=-366)
+        ts10 = add_timedelta(ts9, months=26, days=366)
+        self.assertEqual(datetime.datetime(1997, 8, 31), ts9)
+
