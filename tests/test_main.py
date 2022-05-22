@@ -4,8 +4,8 @@ from context.json_data import JSON_ARRAY_01, JSON_ARRAY_01_1st_split, JSON_ARRAY
     JSON_ARRAY_03, JSON_ARRAY_03_1st_split, JSON_ARRAY_03_2nd_split, \
     JSON_ARRAY_04, JSON_ARRAY_04_1st_split, \
     JSON_ARRAY_05, JSON_ARRAY_05_1st_split, JSON_ARRAY_05_2nd_split, \
-    SPLIT_TYPE_VAR
-from split.main import next_split, create_split_stack
+    SPLIT_TYPE_DICT
+from split.main import
 from typing import List, Union
 import sys
 
@@ -29,7 +29,7 @@ class Test(TestCase):
                        _second_split_episode_index: Union[int, str]) -> None:
             json_array = JSON_ARRAY_01
             episode_index = 0
-            split_type_var_dict = SPLIT_TYPE_VAR
+            split_type_var_dict = SPLIT_TYPE_DICT
 
             # prepare first split stack
             json_array, split_stack = create_split_stack(json_array=_initial_json_array,
@@ -67,10 +67,10 @@ class Test(TestCase):
 
         for i, options_tuple in enumerate(
                 [
-                    (JSON_ARRAY_01, 0, SPLIT_TYPE_VAR, JSON_ARRAY_01_1st_split, 1, JSON_ARRAY_01_2nd_split, 2),
-                    (JSON_ARRAY_02, 0, SPLIT_TYPE_VAR, JSON_ARRAY_02_1st_split, 1, JSON_ARRAY_02_2nd_split, -1),
-                    (JSON_ARRAY_03, 0, SPLIT_TYPE_VAR, JSON_ARRAY_03_1st_split, 1, JSON_ARRAY_03_2nd_split, -1),
-                    (JSON_ARRAY_04, 0, SPLIT_TYPE_VAR, JSON_ARRAY_04_1st_split, -1, None, None)
+                    (JSON_ARRAY_01, 0, SPLIT_TYPE_DICT, JSON_ARRAY_01_1st_split, 1, JSON_ARRAY_01_2nd_split, 2),
+                    (JSON_ARRAY_02, 0, SPLIT_TYPE_DICT, JSON_ARRAY_02_1st_split, 1, JSON_ARRAY_02_2nd_split, -1),
+                    (JSON_ARRAY_03, 0, SPLIT_TYPE_DICT, JSON_ARRAY_03_1st_split, 1, JSON_ARRAY_03_2nd_split, -1),
+                    (JSON_ARRAY_04, 0, SPLIT_TYPE_DICT, JSON_ARRAY_04_1st_split, -1, None, None)
                 ]):
             if DEBUG(): print(f'Test with options tuple {i=}')
             json_arr, index, split_type_var, \

@@ -1,9 +1,9 @@
 from json import loads
 
-SPLIT_TYPE_VAR = {
-    "ABC": {"var": "vaa14", "val": "ao1", "timestampvar": "vaa15splitDate"},
-    "DEF": {"var": "vaa12", "val": "ao1", "timestampvar": "vaa13splitDate"},
-    "XYZ": {"var": "vaa10", "val": "ao1", "timestampvar": "vaa11splitDate"}
+SPLIT_TYPE_DICT = {
+    "TypA": {"split_var": [{"vaa10": "ao1"}], "timestamp_var": "vaa11splitDate"},
+    "TypB": {"split_var": [{"vaa12": "ao1"}], "timestamp_var": "vaa13splitDate"},
+    "TypC": {"split_var": [{"vaa14": "ao1"}], "timestamp_var": "vaa15splitDate"}
 }
 
 # splitType Mapping -> page
@@ -359,8 +359,6 @@ JSON_ARRAY_05 = loads("""[{
     "vaa14": "ao1",
     "vaa15splitDate": "2019-01-01T01-00-00.000Z",
     "vaa05": "Ein Blindtext hier 123."}]""")
-
-
 
 JSON_ARRAY_05_1st_split = loads("""[{"child": "1",
   "endDate": "2018-12-31T01-00-00.000Z",
