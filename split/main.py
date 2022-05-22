@@ -107,6 +107,14 @@ def check_if_key_value(input_dict: dict, key: str, value: Any) -> bool:
     return True
 
 
+def create_split_stack_json_array(json_array: List[Dict[str, Any]],
+                                  current_episode_index: int,
+                                  split_type: dict) -> List[Dict[str, Any]]:
+    json_array[current_episode_index] = create_split_stack(split_type=split_type,
+                                                           current_episode_dict=JSON_ARRAY_01[current_episode_index])
+    return json_array
+
+
 def create_split_stack(split_type: Dict[str, Dict[str, List[Dict[str, str]]]],
                        current_episode_dict: Dict[str, Any]) -> Dict[str, Any]:
     # if "currentSplit" is in current episode, it is obsolete and will be removed
