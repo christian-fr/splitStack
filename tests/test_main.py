@@ -1,15 +1,7 @@
 from unittest import TestCase
-from context.json_data import JSON_ARRAY_01, JSON_ARRAY_01_1st_split, JSON_ARRAY_01_2nd_split, \
-    JSON_ARRAY_02, JSON_ARRAY_02_1st_split, JSON_ARRAY_02_2nd_split, \
-    JSON_ARRAY_03, JSON_ARRAY_03_1st_split, JSON_ARRAY_03_2nd_split, \
-    JSON_ARRAY_04, JSON_ARRAY_04_1st_split, \
-    JSON_ARRAY_05, JSON_ARRAY_05_1st_split, JSON_ARRAY_05_2nd_split, \
-    SPLIT_TYPE_DICT
-from split.main import create_split_stack_json_array, split_episode
-from typing import List, Union
-import sys
-
-DEBUG = getattr(sys, 'gettrace', None)
+from context.json_data import *
+from split.main import split
+import copy
 
 
 class Test(TestCase):
@@ -19,23 +11,80 @@ class Test(TestCase):
     def tearDown(self) -> None:
         pass
 
+    def test_one_split_JSON_ARRAY_01(self):
+        # 1.) do one split
+        json_array = copy.deepcopy(JSON_ARRAY_01)
+        json_array, episode_index = split(json_array=json_array,
+                                          split_types=SPLIT_TYPE_DICT,
+                                          initial_episode_index=0,
+                                          max_iteration=1)
+        self.assertEqual(1, episode_index)
+        self.assertEqual(JSON_ARRAY_01_1st_split, json_array)
+        del json_array
+        del episode_index
 
-class Test(TestCase):
-    def test_split_episode(self):
-        episode_index = 0
-        while episode_index != -1:
-            json_array = create_split_stack_json_array(json_array=JSON_ARRAY_01,
-                                                       current_episode_index=episode_index,
-                                                       split_type=SPLIT_TYPE_DICT)
+    def test_up_to_two_splits_JSON_ARRAY_01(self):
+        # 2.) do up to two splits
+        json_array = copy.deepcopy(JSON_ARRAY_01)
+        json_array, episode_index = split(json_array=json_array,
+                                          split_types=SPLIT_TYPE_DICT,
+                                          initial_episode_index=0,
+                                          max_iteration=2)
+        self.assertEqual(2, episode_index)
+        self.assertEqual(JSON_ARRAY_01_2nd_split, json_array)
+        del json_array
+        del episode_index
 
-            # noinspection DuplicatedCode
-            main_json_array, episode_index = split_episode(json_array=json_array,
-                                                           current_episode_index=episode_index)
-            if episode_index == 1:
-                main_json_array[episode_index]['vaa10'] = 'ao1'
-                main_json_array[episode_index]['vaa11splitDate'] = '2019-04-01T01-00-00.000Z'
-            if episode_index == 1:
-                main_json_array[episode_index]['vaa14'] = 'ao1'
-                main_json_array[episode_index]['vaa15splitDate'] = '2019-02-01T01-00-00.000Z'
+    def test_max_split_JSON_ARRAY_01(self):
+        # 3.) do as many splits as possible
+        json_array = copy.deepcopy(JSON_ARRAY_01)
+        json_array, episode_index = split(json_array=json_array,
+                                          split_types=SPLIT_TYPE_DICT,
+                                          initial_episode_index=0,
+                                          max_iteration=2)
+        self.assertEqual(2, episode_index)
+        self.assertEqual(JSON_ARRAY_01_max_split, json_array)
 
-            # ToDo: finish tests for new implementation
+    def test_one_split_add_split_JSON_ARRAY_01(self):
+        # 4.) do one split, add split variables and timestamps to current episode and then do the second split
+        json_array = copy.deepcopy(JSON_ARRAY_01)
+        json_array, episode_index = split(json_array=json_array,
+                                          split_types=SPLIT_TYPE_DICT,
+                                          initial_episode_index=0,
+                                          max_iteration=1)
+        self.assertEqual(1, episode_index)
+        self.assertEqual(JSON_ARRAY_01_1st_split, json_array)
+
+        json_array[episode_index]['vaa10'] = 'ao1'
+        json_array[episode_index]['vaa11splitDate'] = '2019-04-01T01-00-00.000Z'
+        json_array[episode_index]['vaa14'] = 'ao1'
+        json_array[episode_index]['vaa15splitDate'] = '2019-02-01T01-00-00.000Z'
+
+        json_array, episode_index = split(json_array=json_array.copy(),
+                                          split_types=SPLIT_TYPE_DICT,
+                                          initial_episode_index=episode_index,
+                                          max_iteration=1)
+
+        self.assertEqual(2, episode_index)
+        self.assertEqual(JSON_ARRAY_01_modifed_2nd_split, json_array)
+
+        json_array[episode_index]['vaa12'] = 'ao2'
+        json_array[episode_index]['vaa11splitDate'] = '2019-04-01T01-00-00.000Z'
+        json_array[episode_index]['vaa14'] = 'ao1'
+        json_array[episode_index]['vaa15splitDate'] = '2018-01-01T01-00-00.000Z'
+
+        json_array, episode_index = split(json_array=json_array.copy(),
+                                          split_types=SPLIT_TYPE_DICT,
+                                          initial_episode_index=episode_index,
+                                          max_iteration=1)
+
+        self.assertEqual(3, episode_index)
+        self.assertEqual(JSON_ARRAY_01_modifed_3rd_split, json_array)
+
+        json_array, episode_index = split(json_array=json_array.copy(),
+                                          split_types=SPLIT_TYPE_DICT,
+                                          initial_episode_index=episode_index,
+                                          max_iteration=0)
+
+        self.assertEqual(-1, episode_index)
+        self.assertEqual(JSON_ARRAY_01_modified_max_split, json_array)
