@@ -1,4 +1,3 @@
-import math
 from typing import List, Union, Tuple, Dict, Any
 import datetime
 import math
@@ -118,7 +117,6 @@ def add_timedelta(ts: datetime, months: int = 0, days: int = 0) -> datetime:
     new_year = ts.year
     # additional increment by 1 because we want to decrease it by 1 day (to get the end of the month) later
     months = ts.month + months
-    x = math.floor(months / 12)
 
     if months > 12:
         new_year = new_year + math.floor(months / 12)
