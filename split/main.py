@@ -1,3 +1,4 @@
+import copy
 from typing import List, Union, Tuple, Dict, Any
 import datetime
 import math
@@ -27,6 +28,60 @@ def get_json_property(episode: dict, json_property: str) -> Union[dict, list, st
         return episode[json_property]
     else:
         return None
+
+
+def get_flags(episode_dict: Dict[str, Any], flag_str: str) -> bool:
+    # when current_episode already has a "flag" property/key
+    if "flags" in episode_dict.keys():
+        # when a "flag" key exists and its value is a list
+        if isinstance(episode_dict["flags"], list):
+            # when the flag is already set: return the unmodified json array
+            if flag_str in episode_dict["flags"]:
+                return True
+    return False
+
+
+def set_flags(episode_dict: Dict[str, Any], flag_str: str) -> Dict[str, Any]:
+    episode_dict = copy.deepcopy(episode_dict)
+    # when the flag is already set: return the unmodified episode_dict
+    if get_flags(episode_dict=episode_dict, flag_str=flag_str):
+        return episode_dict
+    # when current_episode does not have "flag" property/key or it is malformed: initiate a new array with flag_str
+    else:
+        episode_dict["flags"] = [flag_str]
+    return episode_dict
+
+
+def remove_flags(episode_dict: Dict[str, Any], flag_str: str) -> Dict[str, Any]:
+    episode_dict = copy.deepcopy(episode_dict)
+    if get_flags(episode_dict=episode_dict, flag_str=flag_str):
+        episode_dict["flags"] = episode_dict["flags"].remove(flag_str)
+    return episode_dict
+
+
+def get_flags_array(json_array: List[Dict[str, Any]], index: int, flag_str: str) -> bool:
+    current_episode = get_episode(json_array=json_array, index=index)
+    return get_flags(episode_dict=current_episode, flag_str=flag_str)
+
+
+def set_flags_array(json_array: List[Dict[str, Any]], index: int, flag_str: str) -> List[Dict[str, Any]]:
+    json_array = copy.deepcopy(json_array)
+    current_episode = get_episode(json_array=json_array, index=index)
+    # when the flag is not yet set: set it in current_episode and return the modified json_array
+    if not get_flags(episode_dict=current_episode, flag_str=flag_str):
+        # set flag and update the episode
+        json_array[index] = set_flags(episode_dict=current_episode, flag_str=flag_str)
+    return json_array
+
+
+def remove_flags_array(json_array: List[Dict[str, Any]], index: int, flag_str: str) -> List[Dict[str, Any]]:
+    json_array = copy.deepcopy(json_array)
+    current_episode = get_episode(json_array=json_array, index=index)
+    # when the flag is set
+    if get_flags(episode_dict=current_episode, flag_str=flag_str):
+        # remove the flag_str from the array and update the episode
+        json_array[index] = remove_flags(episode_dict=current_episode, flag_str=flag_str)
+    return json_array
 
 
 def max_id_in_json_array(json_array: List[Dict[str, Any]]) -> int:
@@ -452,6 +507,10 @@ def split_episode(json_array: List[Dict[str, Any]], current_episode_index: int) 
     #    - dieser niedrigste Key (frühester ->Zeitstempel) wird für die Datumsanpassung genutzt:
     #        parent_episode["endDate"] = earliest_timestamp - 1day
     #        child_episode["startDate"] = earliest_timestamp
+    #       zudem wird, falls vorhanden, der "flag"-Eintrag "eHO" für die Elter-Episoe entfernt:
+    #        remove_flag(parent_episode, "eHO")
+    #       und, falls vorhanden, wird der "flag"-Eintrag "sHO" für die Kind-Episoe entfernt:
+    #        remove_flag(parent_episode, "sHO")
     #       falls hierbei auffällt, dass der Zeitstempel nicht innerhalb der Episode liegt, wird der Eintrag des
     #       Split-Stacks entfernt und der nächste niedrigste Zeitstempel wird gesucht;
     #         ** Prüfung, ob ein Split-Zeitstempel innerhalb der Episode liegt **

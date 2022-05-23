@@ -6,14 +6,11 @@ SPLIT_TYPE_DICT = {
     "TypC": {"split_var": [{"vaa14": "ao1"}], "timestamp_var": "vaa15splitDate"}
 }
 
-# splitType Mapping -> page
-SPLIT_TYPE_PAGE = {
-    "ABC": "page05",
-    "DEF": "page03",
-    "XYZ": "page02"
-}
 
-JSON_ARRAY_01 = json.loads("""[{
+
+# JSON_ARRAY_01: regular episode
+JSON_ARRAY_01 = json.loads("""[
+    {
     "id": "0",
     "startDate": "2017-12-01T01-00-00.000Z",
     "endDate": "2020-05-31T01-00-00.000Z",
@@ -32,10 +29,12 @@ JSON_ARRAY_01 = json.loads("""[{
     "vaa14": "ao1",
     "vaa15splitDate": "2019-01-01T01-00-00.000Z",
     "vaa05": "Ein Blindtext hier 123."
-}]
-""")
+    }
+    ]""")
 
-JSON_ARRAY_01_1st_split = json.loads("""[{"children": ["1"],
+JSON_ARRAY_01_1st_split = json.loads("""[
+  {
+  "children": ["1"],
   "endDate": "2018-12-31T01-00-00.000Z",
   "flags": [],
   "id": "0",
@@ -47,8 +46,10 @@ JSON_ARRAY_01_1st_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"currentSplit": ["TypB", "TypC"],
+  "vaa05": "Ein Blindtext hier 123."
+  },
+  {
+  "currentSplit": ["TypB", "TypC"],
   "endDate": "2020-05-31T01-00-00.000Z",
   "flags": [],
   "id": "1",
@@ -62,9 +63,13 @@ JSON_ARRAY_01_1st_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."}]""")
+  "vaa05": "Ein Blindtext hier 123."
+  }
+  ]""")
 
-JSON_ARRAY_01_2nd_split = json.loads("""[{"children": ["1"],
+JSON_ARRAY_01_2nd_split = json.loads("""[
+  {
+  "children": ["1"],
   "endDate": "2018-12-31T01-00-00.000Z",
   "flags": [],
   "id": "0",
@@ -76,8 +81,10 @@ JSON_ARRAY_01_2nd_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"children": ["2"],
+  "vaa05": "Ein Blindtext hier 123."
+  },
+  {
+  "children": ["2"],
   "endDate": "2019-01-31T01-00-00.000Z",
   "flags": [],
   "id": "1",
@@ -90,8 +97,10 @@ JSON_ARRAY_01_2nd_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"currentSplit": ["TypA"],
+  "vaa05": "Ein Blindtext hier 123."
+  },
+  {
+  "currentSplit": ["TypA"],
   "endDate": "2020-05-31T01-00-00.000Z",
   "flags": [],
   "id": "2",
@@ -104,9 +113,13 @@ JSON_ARRAY_01_2nd_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."}]""")
+  "vaa05": "Ein Blindtext hier 123."
+  }
+  ]""")
 
-JSON_ARRAY_01_max_split = json.loads("""[{"children": ["1"],
+JSON_ARRAY_01_max_split = json.loads("""[
+  {
+  "children": ["1"],
   "endDate": "2018-12-31T01-00-00.000Z",
   "flags": [],
   "id": "0",
@@ -118,8 +131,10 @@ JSON_ARRAY_01_max_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"children": ["2"],
+  "vaa05": "Ein Blindtext hier 123."
+  },
+  {
+  "children": ["2"],
   "endDate": "2019-01-31T01-00-00.000Z",
   "flags": [],
   "id": "1",
@@ -132,8 +147,10 @@ JSON_ARRAY_01_max_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"currentSplit": ["TypA"],
+  "vaa05": "Ein Blindtext hier 123."
+  },
+  {
+  "currentSplit": ["TypA"],
   "endDate": "2020-05-31T01-00-00.000Z",
   "flags": [],
   "id": "2",
@@ -146,9 +163,13 @@ JSON_ARRAY_01_max_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."}]""")
+  "vaa05": "Ein Blindtext hier 123."
+  }
+  ]""")
 
-JSON_ARRAY_01_modifed_2nd_split = json.loads("""[{"children": ["1"],
+JSON_ARRAY_01_modifed_2nd_split = json.loads("""[
+  {
+  "children": ["1"],
   "endDate": "2018-12-31T01-00-00.000Z",
   "flags": [],
   "id": "0",
@@ -160,8 +181,9 @@ JSON_ARRAY_01_modifed_2nd_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"children": ["2"],
+  "vaa05": "Ein Blindtext hier 123."
+  },
+  {"children": ["2"],
   "endDate": "2019-01-31T01-00-00.000Z",
   "flags": [],
   "id": "1",
@@ -174,8 +196,10 @@ JSON_ARRAY_01_modifed_2nd_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"currentSplit": ["TypA", "TypC"],
+  "vaa05": "Ein Blindtext hier 123."
+  },
+  {
+  "currentSplit": ["TypA", "TypC"],
   "endDate": "2020-05-31T01-00-00.000Z",
   "flags": [],
   "id": "2",
@@ -189,9 +213,13 @@ JSON_ARRAY_01_modifed_2nd_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."}]""")
+  "vaa05": "Ein Blindtext hier 123."
+  }
+  ]""")
 
-JSON_ARRAY_01_modifed_3rd_split = json.loads("""[{"children": ["1"],
+JSON_ARRAY_01_modifed_3rd_split = json.loads("""[
+  {
+  "children": ["1"],
   "endDate": "2018-12-31T01-00-00.000Z",
   "flags": [],
   "id": "0",
@@ -203,8 +231,10 @@ JSON_ARRAY_01_modifed_3rd_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"children": ["2"],
+  "vaa05": "Ein Blindtext hier 123."
+  },
+  {
+  "children": ["2"],
   "endDate": "2019-01-31T01-00-00.000Z",
   "flags": [],
   "id": "1",
@@ -217,8 +247,10 @@ JSON_ARRAY_01_modifed_3rd_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"children": ["3"],
+  "vaa05": "Ein Blindtext hier 123."
+  },
+  {
+  "children": ["3"],
   "endDate": "2019-03-31T01-00-00.000Z",
   "flags": [],
   "id": "2",
@@ -232,8 +264,10 @@ JSON_ARRAY_01_modifed_3rd_split = json.loads("""[{"children": ["1"],
   "vaa03": "MISSING",
   "vaa04": "425",
   "vaa05": "Ein Blindtext hier 123.",
-  "vaa12": "ao2"},
- {"currentSplit": ["TypA"],
+  "vaa12": "ao2"
+  },
+  {
+  "currentSplit": ["TypA"],
   "endDate": "2020-05-31T01-00-00.000Z",
   "flags": [],
   "id": "3",
@@ -247,9 +281,13 @@ JSON_ARRAY_01_modifed_3rd_split = json.loads("""[{"children": ["1"],
   "vaa03": "MISSING",
   "vaa04": "425",
   "vaa05": "Ein Blindtext hier 123.",
-  "vaa12": "ao2"}]""")
+  "vaa12": "ao2"
+  }
+  ]""")
 
-JSON_ARRAY_01_modified_max_split = json.loads("""[{"children": ["1"],
+JSON_ARRAY_01_modified_max_split = json.loads("""[
+  {
+  "children": ["1"],
   "endDate": "2018-12-31T01-00-00.000Z",
   "flags": [],
   "id": "0",
@@ -261,8 +299,10 @@ JSON_ARRAY_01_modified_max_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"children": ["2"],
+  "vaa05": "Ein Blindtext hier 123."
+  },
+  {
+  "children": ["2"],
   "endDate": "2019-01-31T01-00-00.000Z",
   "flags": [],
   "id": "1",
@@ -275,8 +315,10 @@ JSON_ARRAY_01_modified_max_split = json.loads("""[{"children": ["1"],
   "vaa02": "a04",
   "vaa03": "MISSING",
   "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"children": ["3"],
+  "vaa05": "Ein Blindtext hier 123."
+  },
+  {
+  "children": ["3"],
   "endDate": "2019-03-31T01-00-00.000Z",
   "flags": [],
   "id": "2",
@@ -290,8 +332,10 @@ JSON_ARRAY_01_modified_max_split = json.loads("""[{"children": ["1"],
   "vaa03": "MISSING",
   "vaa04": "425",
   "vaa05": "Ein Blindtext hier 123.",
-  "vaa12": "ao2"},
- {"endDate": "2020-05-31T01-00-00.000Z",
+  "vaa12": "ao2"
+  },
+  {
+  "endDate": "2020-05-31T01-00-00.000Z",
   "flags": [],
   "id": "3",
   "parent": "2",
@@ -304,15 +348,19 @@ JSON_ARRAY_01_modified_max_split = json.loads("""[{"children": ["1"],
   "vaa03": "MISSING",
   "vaa04": "425",
   "vaa05": "Ein Blindtext hier 123.",
-  "vaa12": "ao2"}]""")
+  "vaa12": "ao2"
+  }
+  ]""")
 
-JSON_ARRAY_02 = json.loads("""[{
+# JSON_ARRAY_02: second split timestamp "vaa13splitDate" lies out of episode
+JSON_ARRAY_02 = json.loads("""[
+    {
     "id": "0",
     "startDate": "2017-12-01T01-00-00.000Z",
     "endDate": "2020-05-31T01-00-00.000Z",
     "state": "new",
     "type": "Slot2",
-    "flags": [],
+    "flags": ["eHO"],
     "vaa00": "ao2",
     "vaa01": "Blindtext dort 987.",
     "vaa10": "ao1",
@@ -325,73 +373,17 @@ JSON_ARRAY_02 = json.loads("""[{
     "vaa14": "ao1",
     "vaa15splitDate": "2019-01-01T01-00-00.000Z",
     "vaa05": "Ein Blindtext hier 123."
-}]
-""")
+    }]""")
 
-JSON_ARRAY_02_1st_split = json.loads("""[{"child": "1",
-  "endDate": "2018-12-31T01-00-00.000Z",
-  "flags": [],
-  "id": "0",
-  "startDate": "2017-12-01T01-00-00.000Z",
-  "state": "done",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"endDate": "2020-05-31T01-00-00.000Z",
-  "flags": [],
-  "id": "1",
-  "parent": "0",
-  "splitStack": {"2021-01-01T01-00-00.000Z": ["DEF"]},
-  "splitType": ["ABC"],
-  "startDate": "2019-01-01T01-00-00.000Z",
-  "state": "new",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."}]""")
-
-JSON_ARRAY_02_2nd_split = json.loads("""[{"child": "1",
-  "endDate": "2018-12-31T01-00-00.000Z",
-  "flags": [],
-  "id": "0",
-  "startDate": "2017-12-01T01-00-00.000Z",
-  "state": "done",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"endDate": "2020-05-31T01-00-00.000Z",
-  "flags": [],
-  "id": "1",
-  "parent": "0",
-  "splitType": ["ABC"],
-  "startDate": "2019-01-01T01-00-00.000Z",
-  "state": "new",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."}]""")
-
-JSON_ARRAY_03 = json.loads("""[{
+# JSON_ARRAY_03: last split var is "vaa14": "ao2", not "ao1"
+JSON_ARRAY_03 = json.loads("""[
+    {
     "id": "0",
     "startDate": "2017-12-01T01-00-00.000Z",
     "endDate": "2020-05-31T01-00-00.000Z",
     "state": "new",
     "type": "Slot2",
-    "flags": [],
+    "flags": ["sHO"],
     "vaa00": "ao2",
     "vaa01": "Blindtext dort 987.",
     "vaa10": "ao1",
@@ -404,232 +396,43 @@ JSON_ARRAY_03 = json.loads("""[{
     "vaa14": "ao2",
     "vaa15splitDate": "2019-01-01T01-00-00.000Z",
     "vaa05": "Ein Blindtext hier 123."
-}]
-""")
+    }
+    ]""")
 
-JSON_ARRAY_03_1st_split = json.loads("""[{"child": "1",
-  "endDate": "2019-01-31T01-00-00.000Z",
-  "flags": [],
-  "id": "0",
-  "startDate": "2017-12-01T01-00-00.000Z",
-  "state": "done",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123.",
-  "vaa12": "ao2",
-  "vaa13splitDate": "2019-01-01T01-00-00.000Z",
-  "vaa14": "ao2",
-  "vaa15splitDate": "2019-01-01T01-00-00.000Z"},
- {"endDate": "2020-05-31T01-00-00.000Z",
-  "flags": [],
-  "id": "1",
-  "parent": "0",
-  "splitType": ["XYZ"],
-  "startDate": "2019-02-01T01-00-00.000Z",
-  "state": "new",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123.",
-  "vaa12": "ao2",
-  "vaa13splitDate": "2019-01-01T01-00-00.000Z",
-  "vaa14": "ao2",
-  "vaa15splitDate": "2019-01-01T01-00-00.000Z"}]""")
-
-JSON_ARRAY_03_2nd_split = json.loads("""[{"child": "1",
-  "endDate": "2019-01-31T01-00-00.000Z",
-  "flags": [],
-  "id": "0",
-  "startDate": "2017-12-01T01-00-00.000Z",
-  "state": "done",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123.",
-  "vaa12": "ao2",
-  "vaa13splitDate": "2019-01-01T01-00-00.000Z",
-  "vaa14": "ao2",
-  "vaa15splitDate": "2019-01-01T01-00-00.000Z"},
- {"endDate": "2020-05-31T01-00-00.000Z",
-  "flags": [],
-  "id": "1",
-  "parent": "0",
-  "splitType": ["XYZ"],
-  "startDate": "2019-02-01T01-00-00.000Z",
-  "state": "new",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123.",
-  "vaa12": "ao2",
-  "vaa13splitDate": "2019-01-01T01-00-00.000Z",
-  "vaa14": "ao2",
-  "vaa15splitDate": "2019-01-01T01-00-00.000Z"}]""")
-
-# first split is done
-JSON_ARRAY_04 = json.loads("""[{"child": "1",
-  "endDate": "2018-12-31T01-00-00.000Z",
-  "flags": [],
-  "id": "0",
-  "startDate": "2017-12-01T01-00-00.000Z",
-  "state": "done",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"endDate": "2020-05-31T01-00-00.000Z",
-  "flags": [],
-  "id": "1",
-  "parent": "0",
-  "splitStack": {"2019-02-01T01-00-00.000Z": ["XYZ"]},
-  "splitType": ["ABC", "DEF"],
-  "startDate": "2019-01-01T01-00-00.000Z",
-  "state": "new",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."}]
-""")
-
-JSON_ARRAY_04_1st_split = json.loads("""[{"child": "1",
-  "endDate": "2018-12-31T01-00-00.000Z",
-  "flags": [],
-  "id": "0",
-  "startDate": "2017-12-01T01-00-00.000Z",
-  "state": "done",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"endDate": "2020-05-31T01-00-00.000Z",
-  "flags": [],
-  "id": "1",
-  "parent": "0",
-  "splitStack": {"2019-02-01T01-00-00.000Z": ["XYZ"]},
-  "splitType": ["ABC", "DEF"],
-  "startDate": "2019-01-01T01-00-00.000Z",
-  "state": "new",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."}]""")
-
-JSON_ARRAY_05 = json.loads("""[{
+# JSON_ARRAY_04: both flags "sHO" and "eHO" set
+JSON_ARRAY_04 = json.loads("""[
+    {
     "id": "0",
     "startDate": "2017-12-01T01-00-00.000Z",
     "endDate": "2020-05-31T01-00-00.000Z",
     "state": "new",
     "type": "Slot2",
-    "flags": [],
+    "flags": ["sHO", "eHO"],
     "vaa00": "ao2",
     "vaa01": "Blindtext dort 987.",
     "vaa10": "ao1",
     "vaa11splitDate": "2019-02-01T01-00-00.000Z",
     "vaa02": "a04",
-    "vaa12": "ao1",
+    "vaa12": "ao2",
     "vaa13splitDate": "2019-01-01T01-00-00.000Z",
     "vaa03": "MISSING",
     "vaa04": "425",
-    "vaa14": "ao1",
+    "vaa14": "ao2",
     "vaa15splitDate": "2019-01-01T01-00-00.000Z",
-    "vaa05": "Ein Blindtext hier 123."}]""")
-
-JSON_ARRAY_05_1st_split = json.loads("""[{"child": "1",
-  "endDate": "2018-12-31T01-00-00.000Z",
-  "flags": [],
-  "id": "0",
-  "startDate": "2017-12-01T01-00-00.000Z",
-  "state": "done",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"endDate": "2020-05-31T01-00-00.000Z",
-  "flags": [],
-  "id": "1",
-  "parent": "0",
-  "splitStack": {"2019-02-01T01-00-00.000Z": ["XYZ"]},
-  "splitType": ["ABC", "DEF"],
-  "startDate": "2019-01-01T01-00-00.000Z",
-  "state": "new",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123.",
-  "vaa12": "ao1",
-  "vaa13splitDate": "2019-03-01T01-00-00.000Z"}]""")
-
-JSON_ARRAY_05_2nd_split = json.loads("""[{"child": "1",
-  "endDate": "2018-12-31T01-00-00.000Z",
-  "flags": [],
-  "id": "0",
-  "startDate": "2017-12-01T01-00-00.000Z",
-  "state": "done",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"child": "2",
-  "endDate": "2019-01-31T01-00-00.000Z",
-  "flags": [],
-  "id": "1",
-  "parent": "0",
-  "splitType": ["ABC", "DEF"],
-  "startDate": "2019-01-01T01-00-00.000Z",
-  "state": "done",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."},
- {"endDate": "2020-05-31T01-00-00.000Z",
-  "flags": [],
-  "id": "2",
-  "parent": "1",
-  "splitStack": {"2019-03-01T01-00-00.000Z": ["XYZ"]},
-  "splitType": ["XYZ"],
-  "startDate": "2019-02-01T01-00-00.000Z",
-  "state": "new",
-  "type": "Slot2",
-  "vaa00": "ao2",
-  "vaa01": "Blindtext dort 987.",
-  "vaa02": "a04",
-  "vaa03": "MISSING",
-  "vaa04": "425",
-  "vaa05": "Ein Blindtext hier 123."}]""")
+    "vaa05": "Ein Blindtext hier 123."
+    },
+    {
+    "id": "1",
+    "startDate": "2020-06-01T01-00-00.000Z",
+    "endDate": "2022-01-31T01-00-00.000Z",
+    "state": "new",
+    "type": "Slot1",
+    "flags": ["eHO"],
+    "vaa00": "ao2",
+    "vaa01": "Blindtext dort 987.",
+    "vaa02": "a04",
+    "vaa03": "MISSING",
+    "vaa04": "425",
+    "vaa05": "Ein Blindtext hier 123."
+    }
+    ]""")
