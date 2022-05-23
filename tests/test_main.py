@@ -5,8 +5,7 @@ from typing import Dict, List, Any
 from split.main import split, add_timedelta, \
     get_flags, get_flags_array, \
     set_flags, set_flags_array, \
-    remove_flags, remove_flags_array, \
-    get_episode
+    remove_flags, remove_flags_array
 import copy
 
 
@@ -88,6 +87,16 @@ class TestSplit(TestCase):
 
         self.assertEqual(-1, episode_index)
         self.assertEqual(JSON_ARRAY_01_modified_max_split, json_array)
+
+    def test_one_split_with_flags_JSON_ARRAY_04(self):
+        # do one split, add split variables and timestamps to current episode and then do the second split
+        json_array = copy.deepcopy(JSON_ARRAY_04)
+        json_array, episode_index = split(json_array=json_array,
+                                          split_types=SPLIT_TYPE_DICT,
+                                          initial_episode_index=0,
+                                          max_iteration=1)
+        self.assertEqual(2, episode_index)
+        self.assertEqual(JSON_ARRAY_04_first_split, json_array)
 
 
 class TestGetFlags(TestCase):

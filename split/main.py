@@ -55,7 +55,7 @@ def set_flags(episode_dict: Dict[str, Any], flag_str: str) -> Dict[str, Any]:
 def remove_flags(episode_dict: Dict[str, Any], flag_str: str) -> Dict[str, Any]:
     episode_dict = copy.deepcopy(episode_dict)
     if get_flags(episode_dict=episode_dict, flag_str=flag_str):
-        episode_dict["flags"] = episode_dict["flags"].remove(flag_str)
+        episode_dict["flags"].remove(flag_str)
     return episode_dict
 
 
@@ -394,6 +394,11 @@ def split_episode(json_array: List[Dict[str, Any]], current_episode_index: int) 
     # clean up parent episode: remove "splitStack" and "currentSplit"
     parent_episode = remove_property(parent_episode, 'splitStack')
     parent_episode = remove_property(parent_episode, 'currentSplit')
+
+    # remove "eHO" from parent's "flags" (if present)
+    parent_episode = remove_flags(episode_dict=parent_episode, flag_str='eHO')
+    # remove "sHO" from child's "flags" (if present)
+    child_episode = remove_flags(episode_dict=child_episode, flag_str='sHO')
 
     # CHILD EPISODE: set new "startDate"
     child_episode['startDate'] = split_timestamp

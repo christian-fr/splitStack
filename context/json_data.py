@@ -6,8 +6,6 @@ SPLIT_TYPE_DICT = {
     "TypC": {"split_var": [{"vaa14": "ao1"}], "timestamp_var": "vaa15splitDate"}
 }
 
-
-
 # JSON_ARRAY_01: regular episode
 JSON_ARRAY_01 = json.loads("""[
     {
@@ -399,7 +397,7 @@ JSON_ARRAY_03 = json.loads("""[
     }
     ]""")
 
-# JSON_ARRAY_04: both flags "sHO" and "eHO" set
+# JSON_ARRAY_04: both flags "sHO" and "eHO" set for first episode
 JSON_ARRAY_04 = json.loads("""[
     {
     "id": "0",
@@ -436,3 +434,54 @@ JSON_ARRAY_04 = json.loads("""[
     "vaa05": "Ein Blindtext hier 123."
     }
     ]""")
+
+JSON_ARRAY_04_first_split = json.loads("""[
+    {
+    "id": "0",
+    "startDate": "2017-12-01T01-00-00.000Z",
+    "endDate": "2019-01-31T01-00-00.000Z",
+    "state": "done",
+    "type": "Slot2",
+    "flags": ["sHO"],
+    "vaa00": "ao2",
+    "vaa01": "Blindtext dort 987.",
+    "vaa02": "a04",
+    "vaa12": "ao2",
+    "vaa03": "MISSING",
+    "vaa04": "425",
+    "vaa14": "ao2",
+    "vaa05": "Ein Blindtext hier 123.",
+    "children": ["2"]
+    },
+    {
+    "id": "1",
+    "startDate": "2020-06-01T01-00-00.000Z",
+    "endDate": "2022-01-31T01-00-00.000Z",
+    "state": "new",
+    "type": "Slot1",
+    "flags": ["eHO"],
+    "vaa00": "ao2",
+    "vaa01": "Blindtext dort 987.",
+    "vaa02": "a04",
+    "vaa03": "MISSING",
+    "vaa04": "425",
+    "vaa05": "Ein Blindtext hier 123."
+    },
+    {
+    "id": "2",
+    "startDate": "2019-02-01T01-00-00.000Z",
+    "endDate": "2020-05-31T01-00-00.000Z",
+    "state": "done",
+    "type": "Slot2",
+    "flags": ["eHO"],
+    "vaa00": "ao2",
+    "vaa01": "Blindtext dort 987.",
+    "vaa02": "a04",
+    "vaa12": "ao2",
+    "vaa03": "MISSING",
+    "vaa04": "425",
+    "vaa14": "ao2",
+    "vaa05": "Ein Blindtext hier 123.",
+    "currentSplit": ["TypA"],
+    "parent": "0"
+    }]""")
