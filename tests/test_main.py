@@ -91,61 +91,31 @@ class TestSplit(TestCase):
 
 
 class TestGetFlags(TestCase):
-    def test_get_flags_01(self):
+    # tests for episode dict
+    def test_get_flags_false(self):
         episode_dict = copy.deepcopy(JSON_ARRAY_02[0])
         self.assertFalse(get_flags(episode_dict=episode_dict, flag_str="sHO"))
 
-    def test_get_flags_02(self):
+    def test_get_flags_true(self):
         episode_dict = copy.deepcopy(JSON_ARRAY_02[0])
         self.assertTrue(get_flags(episode_dict=episode_dict, flag_str="eHO"))
 
-    def test_get_flags_03(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_03[0])
-        self.assertTrue(get_flags(episode_dict=episode_dict, flag_str="sHO"))
-
-    def test_get_flags_04(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_03[0])
-        self.assertFalse(get_flags(episode_dict=episode_dict, flag_str="eHO"))
-
-    def test_get_flags_05(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_02[0])
-        self.assertFalse(get_flags(episode_dict=episode_dict, flag_str="sHO"))
-
-    def test_get_flags_06(self):
+    def test_get_flags_false_unknown_flag(self):
         episode_dict = copy.deepcopy(JSON_ARRAY_02[0])
         self.assertFalse(get_flags(episode_dict=episode_dict, flag_str="anotherFlag"))
 
-    def test_get_flags_07(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_04[0])
-        self.assertTrue(get_flags(episode_dict=episode_dict, flag_str="sHO"))
-
-    def test_get_flags_08(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_04[0])
-        self.assertTrue(get_flags(episode_dict=episode_dict, flag_str="eHO"))
-
-    def test_get_flags_09(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_01[0])
-        self.assertFalse(get_flags(episode_dict=episode_dict, flag_str="sHO"))
-
-    def test_get_flags_10(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_04[0])
-        self.assertTrue(get_flags(episode_dict=episode_dict, flag_str="eHO"))
-
-    def test_get_flags_array_01(self):
-        json_array = copy.deepcopy(JSON_ARRAY_01)
+    # tests for json array
+    def test_get_flags_array_false(self):
+        json_array = copy.deepcopy(JSON_ARRAY_02)
         self.assertFalse(get_flags_array(json_array=json_array, index=0, flag_str="sHO"))
 
-    def test_get_flags_array_02(self):
-        json_array = copy.deepcopy(JSON_ARRAY_04)
-        self.assertTrue(get_flags_array(json_array=json_array, index=0, flag_str="sHO"))
+    def test_get_flags_array_true(self):
+        json_array = copy.deepcopy(JSON_ARRAY_02)
+        self.assertTrue(get_flags_array(json_array=json_array, index=0, flag_str="eHO"))
 
-    def test_get_flags_array_03(self):
-        json_array = copy.deepcopy(JSON_ARRAY_04)
-        self.assertTrue(get_flags_array(json_array=json_array, index=1, flag_str="eHO"))
-
-    def test_get_flags_array_04(self):
-        json_array = copy.deepcopy(JSON_ARRAY_04)
-        self.assertTrue(get_flags_array(json_array=json_array, index=1, flag_str="eHO"))
+    def test_get_flags_array_false_unknown_flag(self):
+        json_array = copy.deepcopy(JSON_ARRAY_02)
+        self.assertFalse(get_flags_array(json_array=json_array, index=0, flag_str="anotherFlag"))
 
 
 class TestSetFlags(TestCase):
@@ -162,65 +132,39 @@ class TestSetFlags(TestCase):
                                       index: int,
                                       flag_str: str,
                                       set_before: bool) -> List[Dict[str, Any]]:
-        episode_dict = copy.deepcopy(get_episode(json_array=json_array, index=index))
-        episode_dict = self.check_and_set_and_check(episode_dict=episode_dict, flag_str=flag_str, set_before=set_before)
-        json_array[index] = episode_dict
+        json_array = copy.deepcopy(json_array)
+        if set_before:
+            self.assertTrue(get_flags_array(json_array=json_array, index=index, flag_str=flag_str))
+        else:
+            self.assertFalse(get_flags_array(json_array=json_array, index=index, flag_str=flag_str))
+        json_array = set_flags_array(json_array=json_array, index=index, flag_str=flag_str)
         self.assertTrue(get_flags_array(json_array=json_array, index=index, flag_str=flag_str))
         return json_array
 
-    def test_set_flags_01(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_02[0])
-        self.check_and_set_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=False)
-
-    def test_set_flags_02(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_03[0])
-        self.check_and_set_and_check(episode_dict=episode_dict, flag_str="eHO", set_before=False)
-
-    def test_set_flags_03(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_02[0])
-        self.check_and_set_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=False)
-
-    def test_set_flags_04(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_02[0])
-        self.check_and_set_and_check(episode_dict=episode_dict, flag_str="anotherFlag", set_before=False)
-
-    def test_set_flags_05(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_01[0])
-        self.check_and_set_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=False)
-
-    def test_set_flags_06(self):
+    def test_set_flags_not_set_before(self):
         episode_dict = copy.deepcopy(JSON_ARRAY_04[1])
-        self.check_and_set_and_check(episode_dict=episode_dict, flag_str="anotherFlag", set_before=False)
+        self.check_and_set_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=False)
 
-    # set a flag that is already set
-    def test_set_flags_07(self):
+    def test_set_flags_set_before(self):
         episode_dict = copy.deepcopy(JSON_ARRAY_04[1])
         self.check_and_set_and_check(episode_dict=episode_dict, flag_str="eHO", set_before=True)
 
     # test array functions
-    def test_set_flags_array_01(self):
-        json_array = copy.deepcopy(JSON_ARRAY_02)
-        self.check_and_set_and_check_array(json_array=json_array, index=0, flag_str="sHO", set_before=False)
-
-    def test_set_flags_array_02(self):
-        json_array = copy.deepcopy(JSON_ARRAY_03)
-        self.check_and_set_and_check_array(json_array=json_array, index=0, flag_str="eHO", set_before=False)
-
-    def test_set_flags_array_03(self):
-        json_array = copy.deepcopy(JSON_ARRAY_02)
-        self.check_and_set_and_check_array(json_array=json_array, index=0, flag_str="sHO", set_before=False)
-
-    def test_set_flags_array_04(self):
-        json_array = copy.deepcopy(JSON_ARRAY_02)
+    def test_set_flags_array_not_set_before_index0(self):
+        json_array = copy.deepcopy(JSON_ARRAY_04)
         self.check_and_set_and_check_array(json_array=json_array, index=0, flag_str="anotherFlag", set_before=False)
 
-    def test_set_flags_array_05(self):
-        json_array = copy.deepcopy(JSON_ARRAY_01)
-        self.check_and_set_and_check_array(json_array=json_array, index=0, flag_str="sHO", set_before=False)
+    def test_set_flags_array_not_set_before_index1(self):
+        json_array = copy.deepcopy(JSON_ARRAY_04)
+        self.check_and_set_and_check_array(json_array=json_array, index=1, flag_str="sHO", set_before=False)
 
-    def test_set_flags_array_06(self):
+    def test_set_flags_array_set_before_index0(self):
         json_array = copy.deepcopy(JSON_ARRAY_04)
         self.check_and_set_and_check_array(json_array=json_array, index=0, flag_str="sHO", set_before=True)
+
+    def test_set_flags_array_set_before_index1(self):
+        json_array = copy.deepcopy(JSON_ARRAY_04)
+        self.check_and_set_and_check_array(json_array=json_array, index=1, flag_str="eHO", set_before=True)
 
 
 class TestRemoveFlags(TestCase):
@@ -229,118 +173,83 @@ class TestRemoveFlags(TestCase):
             self.assertTrue(get_flags(episode_dict=episode_dict, flag_str=flag_str))
         else:
             self.assertFalse(get_flags(episode_dict=episode_dict, flag_str=flag_str))
-        episode_dict = set_flags(episode_dict=episode_dict, flag_str=flag_str)
-        self.assertTrue(get_flags(episode_dict=episode_dict, flag_str=flag_str))
+        episode_dict = remove_flags(episode_dict=episode_dict, flag_str=flag_str)
+        self.assertFalse(get_flags(episode_dict=episode_dict, flag_str=flag_str))
         return episode_dict
 
     def check_and_rm_and_check_array(self, json_array: List[Dict[str, Any]],
                                      index: int,
                                      flag_str: str,
                                      set_before: bool) -> List[Dict[str, Any]]:
-        episode_dict = copy.deepcopy(get_episode(json_array=json_array, index=index))
-        episode_dict = self.check_and_rm_and_check(episode_dict=episode_dict, flag_str=flag_str, set_before=set_before)
-        json_array[index] = episode_dict
+        json_array = copy.deepcopy(json_array)
+        if set_before:
+            self.assertTrue(get_flags_array(json_array=json_array, index=index, flag_str=flag_str))
+        else:
+            self.assertFalse(get_flags_array(json_array=json_array, index=index, flag_str=flag_str))
+        json_array = remove_flags_array(json_array=json_array, index=index, flag_str=flag_str)
         self.assertFalse(get_flags_array(json_array=json_array, index=index, flag_str=flag_str))
         return json_array
 
-    def test_get_flags_02(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_02[0])
-        self.assertTrue(get_flags(episode_dict=episode_dict, flag_str="eHO"))
+    def test_remove_flags_not_set_before(self):
+        episode_dict = copy.deepcopy(JSON_ARRAY_04[1])
+        self.check_and_rm_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=False)
 
-    def test_get_flags_03(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_03[0])
-        self.check_and_rm_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=True)
+    def test_remove_flags_set_before(self):
+        episode_dict = copy.deepcopy(JSON_ARRAY_04[1])
+        self.check_and_rm_and_check(episode_dict=episode_dict, flag_str="eHO", set_before=True)
 
-    def test_get_flags_05(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_02[0])
-        self.check_and_rm_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=True)
-
-        self.assertFalse(get_flags(episode_dict=episode_dict, flag_str="sHO"))
-
-    def test_get_flags_07(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_04[0])
-        self.check_and_rm_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=True)
-
-        self.assertTrue(get_flags(episode_dict=episode_dict, flag_str="sHO"))
-
-    def test_get_flags_08(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_04[0])
-        self.check_and_rm_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=True)
-
-        self.assertTrue(get_flags(episode_dict=episode_dict, flag_str="eHO"))
-
-    def test_get_flags_10(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_04[0])
-        self.check_and_rm_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=True)
-
-        self.assertTrue(get_flags(episode_dict=episode_dict, flag_str="eHO"))
-
-    def test_get_flags_array_02(self):
+    # test array functions
+    def test_remove_flags_array_not_set_before_index0(self):
         json_array = copy.deepcopy(JSON_ARRAY_04)
-        self.check_and_rm_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=True)
+        self.check_and_rm_and_check_array(json_array=json_array, index=0, flag_str="anotherFlag", set_before=False)
 
-        self.assertTrue(get_flags_array(json_array=json_array, index=0, flag_str="sHO"))
-
-    def test_get_flags_array_03(self):
+    def test_remove_flags_array_not_set_before_index1(self):
         json_array = copy.deepcopy(JSON_ARRAY_04)
-        self.check_and_rm_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=True)
+        self.check_and_rm_and_check_array(json_array=json_array, index=1, flag_str="sHO", set_before=False)
 
-        self.assertTrue(get_flags_array(json_array=json_array, index=1, flag_str="eHO"))
-
-    def test_rm_flags_array_04(self):
+    def test_remove_flags_array_set_before_index0(self):
         json_array = copy.deepcopy(JSON_ARRAY_04)
-        self.check_and_rm_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=True)
+        self.check_and_rm_and_check_array(json_array=json_array, index=0, flag_str="sHO", set_before=True)
 
-        self.assertTrue(get_flags_array(json_array=json_array, index=1, flag_str="eHO"))
-
-    def test_get_flags_04(self):
-        episode_dict = copy.deepcopy(JSON_ARRAY_03[0])
-        self.check_and_rm_and_check(episode_dict=episode_dict, flag_str="sHO", set_before=True)
-
-        self.assertFalse(get_flags(episode_dict=episode_dict, flag_str="eHO"))
-
-    def test_remove_flags_array(self):
-        self.fail()
+    def test_remove_flags_array_set_before_index1(self):
+        json_array = copy.deepcopy(JSON_ARRAY_04)
+        self.check_and_rm_and_check_array(json_array=json_array, index=1, flag_str="eHO", set_before=True)
 
 
 class TestTimeDelta(TestCase):
 
-    def test_add_timedelta_sub_01(self):
-        ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-1, days=-1)
-        self.assertEqual(datetime.datetime(2000, 3, 31), ts)
+    def test_add_timedelta_sub_add(self):
+        ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-1, days=1)
+        self.assertEqual(datetime.datetime(2000, 4, 2), ts)
 
-    def test_add_timedelta_sub_02(self):
+    def test_add_timedelta_sub_sub(self):
         ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-4, days=-1)
         self.assertEqual(datetime.datetime(1999, 12, 31), ts)
 
-    def test_add_timedelta_sub_03(self):
-        ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-5, days=-1)
-        self.assertEqual(datetime.datetime(1999, 11, 30), ts)
+    def test_add_timedelta_same_same(self):
+        ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=0, days=0)
+        self.assertEqual(datetime.datetime(2000, 5, 1), ts)
 
-    def test_add_timedelta_sub_04(self):
-        ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-1, days=0)
-        self.assertEqual(datetime.datetime(2000, 4, 1), ts)
-
-    def test_add_timedelta_sub_05(self):
+    def test_add_timedelta_sub_same(self):
         ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-4, days=0)
         self.assertEqual(datetime.datetime(2000, 1, 1), ts)
 
-    def test_add_timedelta_sub_06(self):
-        ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-5, days=0)
-        self.assertEqual(datetime.datetime(1999, 12, 1), ts)
+    def test_add_timedelta_same_sub(self):
+        ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=0, days=-1)
+        self.assertEqual(datetime.datetime(2000, 4, 30), ts)
 
-    def test_add_timedelta_add_01(self):
+    def test_add_timedelta_add_same(self):
         ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=10, days=0)
         self.assertEqual(datetime.datetime(2001, 3, 1), ts)
 
-    def test_add_timedelta_add_02(self):
+    def test_add_timedelta_add_add(self):
         ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=33, days=365)
         self.assertEqual(datetime.datetime(2004, 2, 1), ts)
 
-    def test_add_timedelta_add_03(self):
+    def test_add_timedelta_sub_sub_a_lot(self):
         ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=-26, days=-366)
         self.assertEqual(datetime.datetime(1997, 8, 31), ts)
 
-    def test_add_timedelta_add_sub_01(self):
+    def test_add_timedelta_add_add_a_lot(self):
         ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=26, days=366)
         self.assertEqual(datetime.datetime(2003, 7, 2), ts)
