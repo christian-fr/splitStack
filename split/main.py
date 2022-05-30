@@ -439,135 +439,128 @@ def split_episode(json_array: List[Dict[str, Any]], current_episode_index: int) 
     new_episode_index = len(json_array) - 1
     return json_array, new_episode_index
 
-    # # Definition
-    #
-    # ### Modul
-    # - eine Sammlung von Pages, die aufeinander verweisen und innerhalb der Gesamtbefragung einen Subgraphen
-    # bilden;
-    # - ein Modul beinhaltet detaillierte Nachfragen zu einem bestimmten Episoden-Typ;
-    # - die Modul-Zugehörigkeit einer Page lässt sich durch die ersten `n` Buchstaben ihres Namens eindeutig erkennen
-    #
-    #
-    # ### Teilmodul
-    # - innerhalb eines Modul kann es Teilmodule geben;
-    # - diese Teilmodule werden unter bestimmten Bedingungen betreten und wieder verlassen;
-    # - die Teilmodul-Zugehörigkeit einer Page lässt sich durch die ersten `n+1` Buchstaben ihres Namens
-    # eindeutig erkennen;
-    #
-    # ### Splitkriterium
-    # - ein oder mehrere Merkmale, die inhaltlich zusammenhängen und bei denen eine
-    #       eventuelle Änderung mithilfer einer ->Splitvariablen abgefragt wird;
-    #
-    # ### Splitvariable
-    # - eine oder mehre Variablen, deren Beantwortung mit einem bestimmten Wert
-    #       die Änderung eines ->Split-Kriteriums markiert und die einen Split auslöst; je nach Kombination aus
-    #       Variablenname und Variablenwert wird dem zugehörigen Zeitstempel ein bestimmter ->Split-Typ zugeordnet;
-    #
-    # ### Zeitstempel-Variable
-    # - Variable, die über einen Monthpicker erfasst wurde und einen Zeitstempel der Form
-    #       `"YYYY-MM-DDT01:00:00.000Z"` aufweist, wobei
-    #        `"DD"` -> `{"01","28","29","30","31"}`
-    #        sein kann (erster bzw. letzter Tag des Monats);
-    #
-    #
-    # ### Split-Typ
-    # - ein String, der eindeutig eine von ggf. mehreren möglichen Kombinationen von Variablennamen und
-    #       Variablenwerten markiert, ihm wird beim Split eine ->Zeitstempel-Variable zugeordnet;
-    #       die Split-Typen werden als Map/Dictionary im QML festgelegt zugeführt:
-    # ```
-    #        "Split-Type-Dictionary" : {
-    #         	"SplitTypA": {
-    #     	    	          "split_var": [{
-    #     	    		                   "splitvar01": "val0"
-    #     	    	                       },
-    #     	    	                       {
-    #     	    		                   "splitvar01": "val2"
-    #     	    	                       }],
-    #     	    	         "timestamp_var": "date_var01"
-    #     	                 },
-    #         	"SplitTypB": {
-    #     	    	         "split_var": [{
-    #     	    		                  "splitvar03": "val0"
-    #     	    	                      }],
-    #     	    	         "timestamp_var": "date_var04"
-    #     	                 },
-    #          [...]
-    #         }
-    # ```
-    #
-    # ### Split-Stack:
-    # - eine Map/Dictionary, die aus key-value-Paaren besteht und einem ->Zeitstempel eine Liste von
+    # Definition:
+    # - Modul:
+    #   - eine Sammlung von Pages, die aufeinander verweisen und innerhalb der Gesamtbefragung einen Subgraphen
+    #     bilden;
+    #   - ein Modul beinhaltet detaillierte Nachfragen zu einem bestimmten Episoden-Typ;
+    #   - in einem Modul gibt es:
+    #     - mind. eine Page, über die das Modul betreten wird;
+    #     - mind. eine Page, über die das Modul verlassen wird;
+    #     - ggf. Verzweigungen innerhalb des Moduls;
+    #     - ggf. Pages, auf denen ->Splitkriterien abgefragt werden;
+    #     - ggf. Pages, auf denen ->Splitvariablen abgefragt werden;
+    #     - ggf. Pages, auf denen ->Zeitstempel für diese ->Splitvariablen (per Monthpicker) abgefragt werden;
+    #     - auf den End-Pages eines Moduls werden ggf. ->Split-Stacks erstellt und
+    #       Splits durchgeführt (siehe hierzu: ->Elter-Episode);
+    #   - die Modul-Zugehörigkeit einer Page lässt sich durch die ersten n Buchstaben ihres Namens eindeutig erkennen;
+    # - Teilmodul:
+    #   - innerhalb eines Modul kann es Teilmodule geben;
+    #   - diese Teilmodule werden unter bestimmten Bedingungen betreten und wieder verlassen;
+    #   - die Teilmodul-Zugehörigkeit einer Page lässt sich durch die ersten n+1 Buchstaben ihres Namens
+    #     eindeutig erkennen;
+    # - Splitkriterium: ein oder mehrere Merkmale, die inhaltlich zusammenhängen und bei denen eine
+    #    eventuelle Änderung mithilfer einer ->Splitvariablen abgefragt wird;
+    # - Zeitstempel-Variable: Variable, die über einen Monthpicker erfasst wurde und einen Zeitstempel der Form
+    #    "YYYY-MM-DDT01:00:00.000Z" aufweist, wobei
+    #     "DD" -> {"01","28","29","30","31"}
+    #     sein kann (erster bzw. letzter Tag des Monats);
+    # - Splitvariable: eine oder mehre Variablen, deren Beantwortung mit einem bestimmten Wert
+    #    die Änderung eines ->Split-Kriteriums markiert und die einen Split auslöst; je nach Kombination aus
+    #    Variablenname und Variablenwert wird dem zugehörigen Zeitstempel ein bestimmter ->Split-Typ zugeordnet;
+    # - Split-Typ: ein String, der eindeutig eine von ggf. mehreren möglichen Kombinationen von Variablennamen und
+    #    Variablenwerten markiert, ihm wird beim Split eine ->Zeitstempel-Variable zugeordnet;
+    #    die Split-Typen werden als Map/Dictionary im QML festgelegt zugeführt:
+    #      {
+    #      	"SplitTypA": {
+    #  	    	          "split_var": [{
+    #  	    		                   "splitvar01": "val0",
+    #  	    		                   "splitvar02": "val1"
+    #  	    	                       }],
+    #  	    	         "timestamp_var": "date_var01"
+    #  	                 },
+    #      	"SplitTypB": {
+    #  	    	         "split_var": [{
+    #  	    		                  "splitvar03": "val0"
+    #  	    	                      }],
+    #  	    	         "timestamp_var": "date_var04"
+    #  	                 },
+    #       [...]
+    #      }
+    # - Split-Stack: eine Map/Dictionary, die aus key-value-Paaren besteht und einem ->Zeitstempel eine Liste von
     #    Split-Typen zuordnet; wenn eine Episode ->Split-Variablen mit Variablenwerten enthält, die sich einem
     #    ->Split-Typ zuordnen lassen; der Split-Stack wird auf Grundlage der ->Split-Variablen und der Variablenwerte
     #    für die aktuelle Episode erstellt; falls bereits ein JSON-Property/Key "splitStack" in der aktuellen Episode
     #    vorhanden ist, werden die Split-Stacks vereinigt;
-    #
 
-
-    # 2022-05-24 reduzierte markdown-version
-    # # Definition
+    #    - wenn der Split-Stack leer ist ("{}"), wird die Property aus der Episode entfernt;
+    #    - wenn das Property "currentSplit" noch in der Episode vorhanden ist, wird dieses ebenfalls entfernt.
+    #    - wenn der Split-Stack für die aktuelle Episode erstellt wurde (ggf. auch schon während der Erstellung),
+    #      - werden die ->Split-Variablen, die sich einem ->Split-Typ zuordnen ließen, aus der Episode entfernt;
+    #      - werden alle Split-Zeistempel aus der Episode entfernt;
+    #      - der Split-Stack liegt unmittelbar nach Erstellung als Property "splitStack" der aktuellen Episode vor;
     #
-    # ### Modul
-    # - eine Sammlung von Pages, die aufeinander verweisen und innerhalb der Gesamtbefragung einen Subgraphen
-    # bilden;
-    # - ein Modul beinhaltet detaillierte Nachfragen zu einem bestimmten Episoden-Typ;
-    # - die Modul-Zugehörigkeit einer Page lässt sich durch die ersten `n` Buchstaben ihres Namens eindeutig erkennen
+    #     => hier sollten wir eine "Sicherung" einbauen: falls bereits eine andere Episode existiert (gleich welchen
+    #        Typs), die einen Split-Stack (also das Property "splitStack" oder "currentSplit") beinhaltet, werden
+    #        diese Properties entfernt, sobald ein neuer Split-Stack erstellt und in der Elter-Episode abgespeichert
+    #        wird;
+    # - Elter-Episode: wenn für die aktuelle Episode ein Split-Stack erstellt werden konnte oder noch als JSON-Property
+    #    vorliegt, wird die aktuelle Episode zu einer Elter-Episode;
+    #    - der Status "state" der Elter-Episode wird auf "done" gesetzt;
+    #    - der "splitStack" der Elter-Episode wird nach Keys sortiert, der niedrigste Key (->Zeitstempel) wird
+    #      ausgewählt;
+    #    - dieser niedrigste Key (frühester ->Zeitstempel) wird für die Datumsanpassung genutzt:
+    #        parent_episode["endDate"] = earliest_timestamp - 1day
+    #        child_episode["startDate"] = earliest_timestamp
+    #       zudem wird, falls vorhanden, der "flag"-Eintrag "eHO" für die Elter-Episoe entfernt:
+    #        remove_flag(parent_episode, "eHO")
+    #       und, falls vorhanden, wird der "flag"-Eintrag "sHO" für die Kind-Episoe entfernt:
+    #        remove_flag(parent_episode, "sHO")
+    #       falls hierbei auffällt, dass der Zeitstempel nicht innerhalb der Episode liegt, wird der Eintrag des
+    #       Split-Stacks entfernt und der nächste niedrigste Zeitstempel wird gesucht;
+    #         ** Prüfung, ob ein Split-Zeitstempel innerhalb der Episode liegt **
+    #         parent_episode["startDate"] < timestamp_split <=  parent_episode["endDate"
+    #    - falls kein Zeitstempel gefunden werden konnte, wird die Episode normal beendet, es wird kein
+    #      ->Split-Stack erstellt; es findet kein Split statt;
     #
+    #    - falls ein niedrigster Zeitstempel gefunden werden konnte, der innerhalb der Episode liegt:
+    #      - die gesamte Elter-Episode wird kopiert, die Kopie bekommt eine neue ID:
+    #          child_episode["id"] = max([Liste aller Episoden-IDs aus dem JSON-Array]) +1;
+    #      - die Elter-Episode bekommt ein property:
+    #          parent_episode["child"] = [child_episode["id"]]
+    #        falls das property schon existiert, wird die Liste ergänzt:
+    #          parent_episode["child"].append(child_episode["id"])
+    #      - die generierte ->Kind-Episode erhält ein property "parent":
+    #         child_episode["parent"] = parent_episode["id"]
     #
-    # ### Teilmodul
-    # - innerhalb eines Modul kann es Teilmodule geben;
-    # - diese Teilmodule werden unter bestimmten Bedingungen betreten und wieder verlassen;
-    # - die Teilmodul-Zugehörigkeit einer Page lässt sich durch die ersten `n+1` Buchstaben ihres Namens
-    # eindeutig erkennen;
+    #      - der Value des gefundenen, niedrigsten Eintrags im "splitStack" (Liste von ->Split-Typen, z.B.:
+    #            ["SplitTypA", "SplitTypB"]
+    #          wird ins Property "currentSplit" der ->Kind-Episode kopiert;
+    #      - der Eintrag mit dem zuvor gefunden niedrigstens Zeitstempel wird daraufhin aus dem Split-Stack der Kind-
+    #        Episode entfernt:
+    #         child_episode["splitStack"].pop(**timestamp_used_for_split**)
+    #      - der "stackSplit" der Elter-Episode wird entfernt:
+    #          parent_episode.pop("splitStack")
+    #      - die Property "currentSplit" der Elter-Episode wird entfernt:
+    #          parent_episode.pop("currentSplit")
+    #      - (die genutzten Split-Variablen und Zeitstempel wurden bereits beim Erstellen des Split-Stacks entfernt;)
+    #      - die generierte Episode wird ans JSON-Array angehängt:
+    #          JSON_ARRAY.append(child_episode)
     #
-    # ### Splitkriterium
-    # - ein oder mehrere Merkmale, die inhaltlich zusammenhängen und bei denen eine
-    #       eventuelle Änderung mithilfer einer ->Splitvariablen abgefragt wird;
+    # - Kind-Episode:
+    #    - nach erfolgtem Split und kompletter Bearbeitung der Elter-Episode (siehe oben) ist die Kind-Episode
+    #      die einzige im JSON-Array, die die Properties "splitStack" und "currentSplit" enthält;
+    #    - sie besitzt zudem noch keine -> Split-Variablen oder Zeitstempel-Variablen;
     #
-    # ### Splitvariable
-    # - eine oder mehre Variablen, deren Beantwortung mit einem bestimmten Wert
-    #       die Änderung eines ->Split-Kriteriums markiert und die einen Split auslöst; je nach Kombination aus
-    #       Variablenname und Variablenwert wird dem zugehörigen Zeitstempel ein bestimmter ->Split-Typ zugeordnet;
-    #
-    # ### Zeitstempel-Variable
-    # - Variable, die über einen Monthpicker erfasst wurde und einen Zeitstempel der Form
-    #       `"YYYY-MM-DDT01:00:00.000Z"` aufweist, wobei
-    #        `"DD"` -> `{"01","28","29","30","31"}`
-    #        sein kann (erster bzw. letzter Tag des Monats);
-    #
-    #
-    # ### Split-Typ
-    # - ein String, der eindeutig eine von ggf. mehreren möglichen Kombinationen von Variablennamen und
-    #       Variablenwerten markiert, ihm wird beim Split eine ->Zeitstempel-Variable zugeordnet;
-    #       die Split-Typen werden als Map/Dictionary im QML festgelegt zugeführt:
-    # ```
-    #        "Split-Type-Dictionary" : {
-    #         	"SplitTypA": {
-    #     	    	          "split_var": [{
-    #     	    		                   "splitvar01": "val0"
-    #     	    	                       },
-    #     	    	                       {
-    #     	    		                   "splitvar01": "val2"
-    #     	    	                       }],
-    #     	    	         "timestamp_var": "date_var01"
-    #     	                 },
-    #         	"SplitTypB": {
-    #     	    	         "split_var": [{
-    #     	    		                  "splitvar03": "val0"
-    #     	    	                      }],
-    #     	    	         "timestamp_var": "date_var04"
-    #     	                 },
-    #          [...]
-    #         }
-    # ```
-    #
-    # ### Split-Stack:
-    # - eine Map/Dictionary, die aus key-value-Paaren besteht und einem ->Zeitstempel eine Liste von
-    #    Split-Typen zuordnet; wenn eine Episode ->Split-Variablen mit Variablenwerten enthält, die sich einem
-    #    ->Split-Typ zuordnen lassen; der Split-Stack wird auf Grundlage der ->Split-Variablen und der Variablenwerte
-    #    für die aktuelle Episode erstellt; falls bereits ein JSON-Property/Key "splitStack" in der aktuellen Episode
-    #    vorhanden ist, werden die Split-Stacks vereinigt;
-    #
+    #  Navigation
+    #    - in die Kind-Episode wird navigiert, indem über das Property "child" der noch aktiven Elter-Episode
+    #      der Index der Kind-Episode bestimmt wird:
+    #        child_episode_index = find_index_of_id(json_array=JSON_ARRAY, id=parent_episode["child"])
+    #      (alternativ kann unmittelbar nach Hinzufügen der child_episode zum JSON-Array auch die Länge des Arrays
+    #      bestimmt werden und der Wert um 1 verringert werden:
+    #        child_episode_index = len(JSON_ARRAY) -1
+    #    - falls kein Property "child" gefunden werden kann, wird die Episode normal beendet;
+    #    - innerhalb des Moduls, für das ->Split-Typen definiert wurden,
 
 
 def split(json_array: List[Dict[str, Dict[str, Any]]],
