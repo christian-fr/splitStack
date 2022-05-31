@@ -68,7 +68,7 @@ class TestSplit(TestCase):
         self.assertEqual(JSON_ARRAY_01_modifed_2nd_split, json_array)
 
         json_array[episode_index]['vaa12'] = 'ao2'
-        json_array[episode_index]['vaa11splitDate'] = '2019-04-01T01-00-00.000Z'
+        json_array[episode_index]['vaa13splitDate'] = '2019-04-01T01-00-00.000Z'
         json_array[episode_index]['vaa14'] = 'ao1'
         json_array[episode_index]['vaa15splitDate'] = '2018-01-01T01-00-00.000Z'
 
@@ -262,3 +262,8 @@ class TestTimeDelta(TestCase):
     def test_add_timedelta_add_add_a_lot(self):
         ts = add_timedelta(datetime.datetime(year=2000, month=5, day=1), months=26, days=366)
         self.assertEqual(datetime.datetime(2003, 7, 2), ts)
+
+
+class TestCreateSplitStack(TestCase):
+    def test_create_split_stack(self):
+        self.fail()
