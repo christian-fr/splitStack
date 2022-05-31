@@ -335,12 +335,13 @@ JSON_ARRAY_01_modified_max_split = json.loads("""[
   "vaa12": "ao2"
   },
   {
+  "currentSplit": ["TypA"],
   "endDate": "2020-05-31T01-00-00.000Z",
   "flags": [],
   "id": "3",
   "parent": "2",
   "startDate": "2019-04-01T01-00-00.000Z",
-  "state": "done",
+  "state": "new",
   "type": "Slot2",
   "vaa00": "ao2",
   "vaa01": "Dies hier wurde geändert.",
