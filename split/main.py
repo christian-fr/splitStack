@@ -352,12 +352,14 @@ def split_episode(json_array: List[Dict[str, Any]], current_episode_index: int) 
     # get the current episode from JSON array
     current_episode = json_array[current_episode_index].copy()
 
-    # cancel if there is no prepared "splitStack" in current episode
-    if 'splitStack' not in current_episode.keys():
-        return json_array, -1
-
     # set "state" of current episode to "done"
     current_episode['state'] = 'done'
+
+    # cancel if there is no prepared "splitStack" in current episode
+    if 'splitStack' not in current_episode.keys():
+        json_array[current_episode_index] = current_episode
+        return json_array, -1
+
 
     split_timestamp = None
     split_data = None
