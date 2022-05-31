@@ -338,9 +338,12 @@ def lowest_split_stack_entry(split_stack: Dict[str, List[Dict[str, str]]]) -> Tu
     return list_of_timestamps[0], split_stack[list_of_timestamps[0]]
 
 
-def split_episode(json_array: List[Dict[str, Any]], current_episode_index: int) -> Tuple[List[Dict[str, Any]], int]:
+def split_episode(split_types: dict,
+                  json_array: List[Dict[str, Any]],
+                  current_episode_index: int) -> Tuple[List[Dict[str, Any]], int]:
     """
 
+    :param split_types:
     :param json_array:
     :param current_episode_index:
     :return:
@@ -359,7 +362,6 @@ def split_episode(json_array: List[Dict[str, Any]], current_episode_index: int) 
     if 'splitStack' not in current_episode.keys():
         json_array[current_episode_index] = current_episode
         return json_array, -1
-
 
     split_timestamp = None
     split_data = None
@@ -408,6 +410,17 @@ def split_episode(json_array: List[Dict[str, Any]], current_episode_index: int) 
     child_episode['currentSplit'] = split_data
     # set "state" of child episode to "new"
     child_episode['state'] = 'new'
+
+    # remove all split variables and timestamp variables from current episode
+    list_of_split_variables_to_remove = []
+    for split_type_dict in split_types.values():
+        list_of_split_variables_to_remove.append(split_type_dict['timestamp_var'])
+        for split_var_dict in split_type_dict['split_var']:
+            for split_var_name, _ in split_var_dict.items():
+                list_of_split_variables_to_remove.append(split_var_name)
+    for split_var_name in list_of_split_variables_to_remove:
+        remove_property(child_episode, split_var_name)
+
     # remove the timestamp of the current split from child episode "splitStack"
     #  (as the info is preserved within "currentSplit")
     if split_timestamp in child_episode['splitStack']:
@@ -588,7 +601,8 @@ def split(json_array: List[Dict[str, Dict[str, Any]]],
                                                    json_array=json_array,
                                                    current_episode_index=current_episode_index).copy()
 
-        json_array, current_episode_index = split_episode(json_array=json_array,
+        json_array, current_episode_index = split_episode(split_types=split_types,
+                                                          json_array=json_array,
                                                           current_episode_index=current_episode_index)
 
         json_array = json_array.copy()

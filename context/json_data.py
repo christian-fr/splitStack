@@ -280,8 +280,7 @@ JSON_ARRAY_01_modifed_3rd_split = json.loads("""[
   "vaa02": "a04",
   "vaa03": "ao10",
   "vaa04": "120",
-  "vaa05": "Auch das hier wurde modifiziert.",
-  "vaa12": "ao2"
+  "vaa05": "Auch das hier wurde modifiziert."
   }
   ]""")
 
@@ -335,21 +334,19 @@ JSON_ARRAY_01_modified_max_split = json.loads("""[
   "vaa12": "ao2"
   },
   {
-  "currentSplit": ["TypA"],
   "endDate": "2020-05-31T01-00-00.000Z",
   "flags": [],
   "id": "3",
   "parent": "2",
   "startDate": "2019-04-01T01-00-00.000Z",
-  "state": "new",
+  "state": "done",
   "type": "Slot2",
   "vaa00": "ao2",
   "vaa01": "Dies hier wurde geändert.",
   "vaa02": "a04",
   "vaa03": "ao10",
   "vaa04": "120",
-  "vaa05": "Auch das hier wurde modifiziert.",
-  "vaa12": "ao2"
+  "vaa05": "Auch das hier wurde modifiziert."
   }
   ]""")
 
@@ -480,10 +477,8 @@ JSON_ARRAY_04_first_split = json.loads("""[
     "vaa00": "ao2",
     "vaa01": "Blindtext dort 987.",
     "vaa02": "a04",
-    "vaa12": "ao2",
     "vaa03": "MISSING",
     "vaa04": "425",
-    "vaa14": "ao2",
     "vaa05": "Ein Blindtext hier 123.",
     "currentSplit": ["TypA"],
     "parent": "0"
