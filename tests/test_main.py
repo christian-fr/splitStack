@@ -40,8 +40,8 @@ class TestSplit(TestCase):
         json_array, episode_index = split(json_array=json_array,
                                           split_types=SPLIT_TYPE_DICT,
                                           initial_episode_index=0,
-                                          max_iteration=2)
-        self.assertEqual(2, episode_index)
+                                          max_iteration=0)
+        self.assertEqual(-1, episode_index)
         self.assertEqual(JSON_ARRAY_01_max_split, json_array)
 
     def test_one_split_add_split_JSON_ARRAY_01(self):
@@ -58,6 +58,10 @@ class TestSplit(TestCase):
         json_array[episode_index]['vaa11splitDate'] = '2019-04-01T01-00-00.000Z'
         json_array[episode_index]['vaa14'] = 'ao1'
         json_array[episode_index]['vaa15splitDate'] = '2019-02-01T01-00-00.000Z'
+        json_array[episode_index]['vaa01'] = 'Dies hier wurde geändert.'
+        json_array[episode_index]['vaa03'] = 'ao10'
+        json_array[episode_index]['vaa04'] = '120'
+        json_array[episode_index]['vaa05'] = 'Auch das hier wurde modifiziert.'
 
         json_array, episode_index = split(json_array=json_array.copy(),
                                           split_types=SPLIT_TYPE_DICT,
@@ -71,6 +75,7 @@ class TestSplit(TestCase):
         json_array[episode_index]['vaa13splitDate'] = '2019-04-01T01-00-00.000Z'
         json_array[episode_index]['vaa14'] = 'ao1'
         json_array[episode_index]['vaa15splitDate'] = '2018-01-01T01-00-00.000Z'
+
 
         json_array, episode_index = split(json_array=json_array.copy(),
                                           split_types=SPLIT_TYPE_DICT,

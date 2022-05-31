@@ -404,6 +404,8 @@ def split_episode(json_array: List[Dict[str, Any]], current_episode_index: int) 
     child_episode['startDate'] = split_timestamp
     # set "currentSplit"
     child_episode['currentSplit'] = split_data
+    # set "state" of child episode to "new"
+    child_episode['state'] = 'new'
     # remove the timestamp of the current split from child episode "splitStack"
     #  (as the info is preserved within "currentSplit")
     if split_timestamp in child_episode['splitStack']:
